@@ -87,11 +87,11 @@
 
             fetch(scriptURL, {
                 method: 'POST',
+                mode: 'no-cors',  // Usando no-cors para evitar problemas de CORS
                 body: formData
             })
-            .then(response => response.json())
-            .then(data => {
-                mensagem.textContent = data.mensagem || "Cadastro enviado com sucesso!";
+            .then(() => {
+                mensagem.textContent = "Cadastro enviado com sucesso!";
                 mensagem.style.color = "green";
                 form.reset();
                 document.getElementById("dataHora").value = new Date().toLocaleString();
