@@ -102,53 +102,47 @@
                     </div>
                 </fieldset>
             </form>
-            <div id="mensagem" class="mensagem-oculta"></div>
+            <p id="mensagem"></p>
             
         </div>
-        <script>
-            const scriptURL = "https://script.google.com/macros/s/AKfycbxRMpd8m9M2o4_kCX_FpBeIGRrdaXMuvcGEFgjNJRXoBG-TQM_RFK1gUswgH97N9hNQow/exec";
-            const form = document.getElementById('formulario');
-            const mensagem = document.getElementById('mensagem');
-        
-            // Preenche data/hora ao carregar
+    <script>
+        // Preencher o campo de data e hora automaticamente
+        const scriptURL = "https://script.google.com/macros/s/AKfycbxRMpd8m9M2o4_kCX_FpBeIGRrdaXMuvcGEFgjNJRXoBG-TQM_RFK1gUswgH97N9hNQow/exec";
+        const form = document.getElementById('formulario');
+        const mensagem = document.getElementById('mensagem');
+
+        // Preencher data/hora ao carregar
+        document.getElementById("dataHora").value = new Date().toLocaleString();
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
             document.getElementById("dataHora").value = new Date().toLocaleString();
-        
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
-                document.getElementById("dataHora").value = new Date().toLocaleString();
-        
-                const formData = new FormData(form);
-        
-                fetch(scriptURL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: formData
-                })
-                .then(() => {
-                    mensagem.textContent = "Cadastro enviado com sucesso!";
-                    mensagem.classList.remove("mensagem-oculta", "mensagem-erro");
-                    mensagem.classList.add("mensagem-sucesso");
-        
-                    form.reset();
-                    document.getElementById("dataHora").value = new Date().toLocaleString();
-                })
-                .catch(error => {
-                    mensagem.textContent = "Erro ao enviar. Tente novamente.";
-                    mensagem.classList.remove("mensagem-oculta", "mensagem-sucesso");
-                    mensagem.classList.add("mensagem-erro");
-                    console.error("Erro!", error.message);
-                });
-            });
-        
-            // ⚠️ Agora está fora do escopo da função acima
-            function novoCadastro() {
+
+            const formData = new FormData(form);
+
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors',  // Usando no-cors para evitar problemas de CORS
+                body: formData
+            })
+            .then(() => {
+                mensagem.textContent = "Cadastro enviado com sucesso!";
+                mensagem.style.color = "green";
                 form.reset();
-                mensagem.textContent = "";
-                mensagem.classList.remove("mensagem-sucesso", "mensagem-erro");
-                mensagem.classList.add("mensagem-oculta");
                 document.getElementById("dataHora").value = new Date().toLocaleString();
-            }
-        </script>
-        
+            })
+            .catch(error => {
+                alert("Erro ao enviar. Tente novamente.");
+                console.error("Erro!", error.message);
+            });
+        });
+
+        function novoCadastro() {
+            form.reset();
+            mensagem.innerText = "";
+            document.getElementById("dataHora").value = new Date().toLocaleString();
+        }
+    </script>
 </body>
 </html>
+
