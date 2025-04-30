@@ -7,106 +7,148 @@
     <title>Cadastro de Aluno</title>
 </head>
 <body>
-    <header>
-    <h1>Avaliação Antropométrica</h1>
-    <section>
-    <form id="formulario">
-        <label for="escola">Escolha a Escola:</label>
-        <select id="escola" name="escola" required>
-            <option value="CEI DULCE GODINHO NAZÁRIO">CEI DULCE GODINHO NAZÁRIO</option>
-            <option value="CEI JÚLIA SAGÁS">CEI JÚLIA SAGÁS</option>
-            <!-- Adicione todas as escolas aqui -->
-        </select><br><br>
+    <div class="box">
+        
+           
+                
+            <form id="formulario">
+                <fieldset>
+                    <legend><b>Avaliação Antropométrica</b></legend>
+                    <label for="escola">Escolha a Escola:</label>
+                    <select id="escola" name="escola" required>
+                        <option value="CEI DULCE GODINHO NAZÁRIO">CEI DULCE GODINHO NAZÁRIO</option>
+                        <option value="CEI JÚLIA SAGÁS">CEI JÚLIA SAGÁS</option>
+                        <!-- Adicione todas as escolas aqui -->
+                    </select><br><br>
+                    <div class="modal">
+                        <label for="modalidade">Modalidade de Ensino:</label>
+                        <select id="modalidade" name="modalidade" required>
+                            <option value="Ed. Infantil">Ed. Infantil</option>
+                            <option value="Fund. 1">Fund. 1</option>
+                            <option value="Fund. 2">Fund. 2</option>
+                        </select>
+                        
+                        <label for="turma">Turma:</label>
+                        <select id="turma" name="turma" required>
+                            <option value="1º I">1º I</option>
+                            <option value="1º II">1º II</option>
+                            <option value="1º III">1º III</option>
+                            <!-- Adicione todas as turmas aqui -->
+                        </select><br><br>
+                    </div>
 
-        <label for="modalidade">Modalidade de Ensino:</label>
-        <select id="modalidade" name="modalidade" required>
-            <option value="Ed. Infantil">Ed. Infantil</option>
-            <option value="Fund. 1">Fund. 1</option>
-            <option value="Fund. 2">Fund. 2</option>
-        </select><br><br>
+                    <label for="periodo">Período:</label>
+                    <select id="periodo" name="periodo" required>
+                        <option value="Matutino">Matutino</option>
+                        <option value="Vespertino">Vespertino</option>
+                        <option value="Integral">Integral</option>
+                    </select><br><br>
+                    <div class="inputBox">
+                        <input type="text" id="nomeAluno" name="nomeAluno" class="inputUser" required>
+                        <label for="nomeAluno" class="labelInput">Nome do Aluno:</label>
+                        
+                    </div>
+                    
+                    <p>Gênero</p>
+                    <input type="radio" id="feminino" name="genero" value="Feminino" required>
+                    <label for="feminino">Feminino</label>
+                    
+                    <input type="radio" id="masculino" name="genero" value="Masculino" required>
+                    <label for="masculino">Masculino</label>
+                    <br><br>
 
-        <label for="turma">Turma:</label>
-        <select id="turma" name="turma" required>
-            <option value="1º I">1º I</option>
-            <option value="1º II">1º II</option>
-            <option value="1º III">1º III</option>
-            <!-- Adicione todas as turmas aqui -->
-        </select><br><br>
+                    <label for="dataNascimento">Data de Nascimento:</label>
+                    <input type="date" id="dataNascimento" name="dataNascimento" required>
+                    <label for="idade"><b>Idade:</b></label>
+                <input type="text" id="idade"  readonly>
+                <script>
+                    document.getElementById('dataNascimento').addEventListener('input', function () {
+                        let dataNascimento = new Date(this.value);
+                        let hoje = new Date();
+                        
+                        let idade = hoje.getFullYear() - dataNascimento.getFullYear();
+                        let mes = hoje.getMonth() - dataNascimento.getMonth();
+                        let dia = hoje.getDate() - dataNascimento.getDate();
+                
+                        // Ajustar caso ainda não tenha feito aniversário no ano
+                        if (mes < 0 || (mes === 0 && dia < 0)) {
+                            idade--;
+                        }
+                
+                        // Atualiza o campo de idade
+                        document.getElementById('idade').value = idade >= 0 ? idade : "";
+                    });
+                </script>                    
+                <br><br>
+                    
+                    <div class="inputBox">
+                    <input type="number" step="0.1" id="peso" name="peso"  max="190" class="inputUser" required>
+                    <label for="peso" class="labelInput">Peso (kg):</label>
+                    </div><br>
+                    <div class="inputBox">
+                    <input type="number" step="0.01" id="altura" name="altura" max="2" class="inputUser" required>
+                    <label for="altura" class="labelInput">Altura (Ex: 1,78):</label>
+                       
+                    </div><br><br>
 
-        <label for="periodo">Período:</label>
-        <select id="periodo" name="periodo" required>
-            <option value="Matutino">Matutino</option>
-            <option value="Vespertino">Vespertino</option>
-            <option value="Integral">Integral</option>
-        </select><br><br>
-
-        <label for="nomeAluno">Nome do Aluno:</label>
-        <input type="text" id="nomeAluno" name="nomeAluno" required><br><br>
-
-        <label for="genero">Gênero:</label>
-        <select id="genero" name="genero" required>
-            <option value="Masculino">Masculino</option>
-            <option value="Feminino">Feminino</option>
-        </select><br><br>
-
-        <label for="dataNascimento">Data de Nascimento:</label>
-        <input type="date" id="dataNascimento" name="dataNascimento" required><br><br>
-
-        <label for="peso">Peso (kg):</label>
-        <input type="number" step="0.1" id="peso" name="peso" required><br><br>
-
-        <label for="altura">Altura (m):</label>
-        <input type="number" step="0.01" id="altura" name="altura" required><br><br>
-
-        <label for="nomeProfessor">Nome do Professor:</label>
-        <input type="text" id="nomeProfessor" name="nomeProfessor" required><br><br>
-
-        <input type="hidden" id="dataHora" name="dataHora">
-
-        <button type="submit">Enviar</button>
-        <button type="button" onclick="novoCadastro()" style="background-color: green;">Novo Cadastro</button>
-    </form>
-        <p id="mensagem" style="color: blue;"></p>
-    </section>
-    </header>
-
-    <script>
-        // Preencher o campo de data e hora automaticamente
-        const scriptURL = "https://script.google.com/macros/s/AKfycbxRMpd8m9M2o4_kCX_FpBeIGRrdaXMuvcGEFgjNJRXoBG-TQM_RFK1gUswgH97N9hNQow/exec";
-        const form = document.getElementById('formulario');
-        const mensagem = document.getElementById('mensagem');
-
-        // Preencher data/hora ao carregar
-        document.getElementById("dataHora").value = new Date().toLocaleString();
-
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
+                    <div class="inputBox">
+                    <input type="text" id="nomeProfessor" name="nomeProfessor" class="inputUser" required>
+                    <label for="nomeProfessor" class="labelInput">Nome do Professor:</label><br><br>
+                    </div>
+                    <input type="hidden" id="dataHora" name="dataHora">
+                    <div class="botoes-container"> 
+                    <button type="submit" id="submit">Enviar</button>
+                    <button type="button" id="novo" onclick="novoCadastro()">Novo Cadastro</button>
+                    </div>
+                </fieldset>
+            </form>
+            <div id="mensagem" class="mensagem-oculta"></div>
+            
+        </div>
+        <script>
+            const scriptURL = "https://script.google.com/macros/s/AKfycbxRMpd8m9M2o4_kCX_FpBeIGRrdaXMuvcGEFgjNJRXoBG-TQM_RFK1gUswgH97N9hNQow/exec";
+            const form = document.getElementById('formulario');
+            const mensagem = document.getElementById('mensagem');
+        
+            // Preenche data/hora ao carregar
             document.getElementById("dataHora").value = new Date().toLocaleString();
-
-            const formData = new FormData(form);
-
-            fetch(scriptURL, {
-                method: 'POST',
-                mode: 'no-cors',  // Usando no-cors para evitar problemas de CORS
-                body: formData
-            })
-            .then(() => {
-                mensagem.textContent = "Cadastro enviado com sucesso!";
-                mensagem.style.color = "green";
-                form.reset();
+        
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
                 document.getElementById("dataHora").value = new Date().toLocaleString();
-            })
-            .catch(error => {
-                alert("Erro ao enviar. Tente novamente.");
-                console.error("Erro!", error.message);
+        
+                const formData = new FormData(form);
+        
+                fetch(scriptURL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: formData
+                })
+                .then(() => {
+                    mensagem.textContent = "Cadastro enviado com sucesso!";
+                    mensagem.classList.remove("mensagem-oculta", "mensagem-erro");
+                    mensagem.classList.add("mensagem-sucesso");
+        
+                    form.reset();
+                    document.getElementById("dataHora").value = new Date().toLocaleString();
+                })
+                .catch(error => {
+                    mensagem.textContent = "Erro ao enviar. Tente novamente.";
+                    mensagem.classList.remove("mensagem-oculta", "mensagem-sucesso");
+                    mensagem.classList.add("mensagem-erro");
+                    console.error("Erro!", error.message);
+                });
             });
-        });
-
-        function novoCadastro() {
-            form.reset();
-            mensagem.innerText = "";
-            document.getElementById("dataHora").value = new Date().toLocaleString();
-        }
-    </script>
+        
+            // ⚠️ Agora está fora do escopo da função acima
+            function novoCadastro() {
+                form.reset();
+                mensagem.textContent = "";
+                mensagem.classList.remove("mensagem-sucesso", "mensagem-erro");
+                mensagem.classList.add("mensagem-oculta");
+                document.getElementById("dataHora").value = new Date().toLocaleString();
+            }
+        </script>
+        
 </body>
 </html>
