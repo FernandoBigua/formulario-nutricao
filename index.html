@@ -3,146 +3,268 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutrição</title>
     <link rel="stylesheet" href="style.css">
-    <title>Cadastro de Aluno</title>
 </head>
 <body>
     <div class="box">
-        
-           
-                
-            <form id="formulario">
-                <fieldset>
-                    <legend><b>Avaliação Antropométrica</b></legend>
-                    <label for="escola">Escolha a Escola:</label>
-                    <select id="escola" name="escola" required>
-                        <option value="CEI DULCE GODINHO NAZÁRIO">CEI DULCE GODINHO NAZÁRIO</option>
-                        <option value="CEI JÚLIA SAGÁS">CEI JÚLIA SAGÁS</option>
-                        <!-- Adicione todas as escolas aqui -->
-                    </select><br><br>
-                    <div class="modal">
-                        <label for="modalidade">Modalidade de Ensino:</label>
-                        <select id="modalidade" name="modalidade" required>
-                            <option value="Ed. Infantil">Ed. Infantil</option>
-                            <option value="Fund. 1">Fund. 1</option>
-                            <option value="Fund. 2">Fund. 2</option>
-                        </select>
-                        
-                        <label for="turma">Turma:</label>
-                        <select id="turma" name="turma" required>
-                            <option value="1º I">1º I</option>
-                            <option value="1º II">1º II</option>
-                            <option value="1º III">1º III</option>
-                            <!-- Adicione todas as turmas aqui -->
-                        </select><br><br>
-                    </div>
+        <form id="formulario">
+            <fieldset>
+                <legend><b>Avaliação Antropométrica</b></legend>
 
-                    <label for="periodo">Período:</label>
-                    <select id="periodo" name="periodo" required>
-                        <option value="Matutino">Matutino</option>
-                        <option value="Vespertino">Vespertino</option>
-                        <option value="Integral">Integral</option>
-                    </select><br><br>
-                    <div class="inputBox">
-                        <input type="text" id="nomeAluno" name="nomeAluno" class="inputUser" required>
-                        <label for="nomeAluno" class="labelInput">Nome do Aluno:</label>
-                        
-                    </div>
-                    
-                    <p>Gênero</p>
-                    <input type="radio" id="feminino" name="genero" value="Feminino" required>
-                    <label for="feminino">Feminino</label>
-                    
-                    <input type="radio" id="masculino" name="genero" value="Masculino" required>
-                    <label for="masculino">Masculino</label>
-                    <br><br>
+                <label for="escola">Escolha a Escola:</label>
+                <select id="escola" name="escola" required>
+                    <option value="CEI DULCE GODINHO NAZÁRIO">CEI DULCE GODINHO NAZÁRIO</option>
+                    <option value="CEI JÚLIA SAGÁS">CEI JÚLIA SAGÁS</option>
+                    <option value="CEI PROF.ª EUDES MAFRA">CEI PROF.ª EUDES MAFRA</option>
+                    <option value="CEI PROF.ª LÚCIA FRANCISCA SAGÁS">CEI PROF.ª LÚCIA FRANCISCA SAGÁS</option>
+                    <option value="CEI PROF.ª RAQUEL DAVINA ALVES DE SOUZA">CEI PROF.ª RAQUEL DAVINA ALVES DE SOUZA</option>
+                    <option value="CEI PROF.º ROBERTO MANOEL CALLADO">CEI PROF.º ROBERTO MANOEL CALLADO</option>
+                    <option value="CEI SENHORA DOS NAVEGANTES">CEI SENHORA DOS NAVEGANTES</option>
+                    <option value="E.E.B. MUN. Prof.ª ELVIRA SARDÁ DA SILVA">E.E.B. MUN. Prof.ª ELVIRA SARDÁ DA SILVA</option>
+                    <option value="E.E.B.M. ABEL CAPELLA">E.E.B.M. ABEL CAPELLA</option>
+                    <option value="E.E.B.M. Mª AMÁLIA CARDOSO">E.E.B.M. Mª AMÁLIA CARDOSO</option>
+                    <option value="E.M. PREFEITO JOÃO BALDANÇA SOBRINHO">E.M. PREFEITO JOÃO BALDANÇA SOBRINHO</option>
+                    <option value="E.M. PREFEITO MIGUEL PEDRO DOS SANTOS">E.M. PREFEITO MIGUEL PEDRO DOS SANTOS</option>
+                    <option value="E.M. PROF.ª ALAÍDE DA SILVA MAFRA">E.M. PROF.ª ALAÍDE DA SILVA MAFRA</option>
+                    <option value="E.M. PROF.ª DALMA LUZ DE AZEVEDO">E.M. PROF.ª DALMA LUZ DE AZEVEDO</option>
+                    <option value="E.M. PROF.ª SILVIA PRAZERES DE CARVALHO">E.M. PROF.ª SILVIA PRAZERES DE CARVALHO</option>
+                    <option value="ESCOLA MUNICIPAL DE EDUCAÇÃO ESPECIAL  MARIA VERÍSSIMO DA SILVA">ESCOLA MUNICIPAL DE EDUCAÇÃO ESPECIAL  MARIA VERÍSSIMO DA SILVA</option>
+                </select><br><br>
 
-                    <label for="dataNascimento">Data de Nascimento:</label>
-                    <input type="date" id="dataNascimento" name="dataNascimento" required>
-                    <label for="idade"><b>Idade:</b></label>
-                <input type="text" id="idade"  readonly>
-                <script>
-                    document.getElementById('dataNascimento').addEventListener('input', function () {
-                        let dataNascimento = new Date(this.value);
-                        let hoje = new Date();
-                        
-                        let idade = hoje.getFullYear() - dataNascimento.getFullYear();
-                        let mes = hoje.getMonth() - dataNascimento.getMonth();
-                        let dia = hoje.getDate() - dataNascimento.getDate();
-                
-                        // Ajustar caso ainda não tenha feito aniversário no ano
-                        if (mes < 0 || (mes === 0 && dia < 0)) {
-                            idade--;
-                        }
-                
-                        // Atualiza o campo de idade
-                        document.getElementById('idade').value = idade >= 0 ? idade : "";
-                    });
-                </script>                    
-                <br><br>
-                    
-                    <div class="inputBox">
-                    <input type="number" step="0.1" id="peso" name="peso"  max="190" class="inputUser" required>
+                <label for="modalidade">Modalidade de Ensino:</label>
+                <select id="modalidade" name="modalidade" required>
+                    <option value="Ed. Infantil">Ed. Infantil</option>
+                    <option value="Fund. 1">Fund. 1</option>
+                    <option value="Fund. 2">Fund. 2</option>
+                </select>
+
+                <label for="turma">Turma:</label>
+                <select id="turma" name="turma" required></select><br><br>
+
+                <label for="periodo">Período:</label>
+                <select id="periodo" name="periodo" required>
+                    <option value="Matutino">Matutino</option>
+                    <option value="Vespertino">Vespertino</option>
+                    <option value="Integral">Integral</option>
+                </select><br><br>
+
+                <div class="inputBox">
+                    <input type="text" id="nomeAluno" name="nomeAluno" class="inputUser" required>
+                    <label for="nomeAluno" class="labelInput">Nome do Aluno:</label>
+                </div><br>
+
+                <p>Gênero</p>
+                <input type="radio" id="feminino" name="genero" value="Feminino" checked required>
+                <label for="feminino">Feminino</label>
+                <input type="radio" id="masculino" name="genero" value="Masculino" required>
+                <label for="masculino">Masculino</label><br><br>
+
+                <label for="dataNascimento">Data de Nascimento:</label>
+                <input type="date" id="dataNascimento" name="dataNascimento" required>
+                <label for="idade"><b>Idade:</b></label>
+                <input type="text" id="idade" readonly><br><br>
+
+                <div class="inputBox">
+                    <input type="number" step="0.001" id="peso" name="peso" min="10" max="190" class="inputUser" required>
                     <label for="peso" class="labelInput">Peso (kg):</label>
-                    </div><br>
-                    <div class="inputBox">
+                </div><br>
+
+                <div class="inputBox">
                     <input type="number" step="0.01" id="altura" name="altura" max="2" class="inputUser" required>
                     <label for="altura" class="labelInput">Altura (Ex: 1,78):</label>
-                       
-                    </div><br><br>
+                </div><br><br>
 
-                    <div class="inputBox">
+                <div class="inputBox">
                     <input type="text" id="nomeProfessor" name="nomeProfessor" class="inputUser" required>
-                    <label for="nomeProfessor" class="labelInput">Nome do Professor:</label><br><br>
-                    </div>
-                    <input type="hidden" id="dataHora" name="dataHora">
-                    <div class="botoes-container"> 
+                    <label for="nomeProfessor" class="labelInput">Nome do Professor:</label>
+                </div><br>
+
+                <input type="hidden" id="dataHora" name="dataHora">
+                <div id="loader" style="display:none; text-align:center; margin-top: 10px;">
+                  <img src="https://i.gifer.com/ZZ5H.gif" alt="Enviando..." width="50">
+                  <p>Enviando dados...</p>
+              </div>
+                <p id="mensagem"></p>
+
+                <div class="botoes-container">
+                    
                     <button type="submit" id="submit">Enviar</button>
                     <button type="button" id="novo" onclick="novoCadastro()">Novo Cadastro</button>
-                    </div>
-                </fieldset>
-            </form>
-            <p id="mensagem"></p>
-            
-        </div>
+                </div>
+                <div id="listaAlunos" style="margin-top: 20px;"></div>
+
+            </fieldset>
+        </form>
+        
+    </div>
+
     <script>
-        // Preencher o campo de data e hora automaticamente
         const scriptURL = "https://script.google.com/macros/s/AKfycbxRMpd8m9M2o4_kCX_FpBeIGRrdaXMuvcGEFgjNJRXoBG-TQM_RFK1gUswgH97N9hNQow/exec";
         const form = document.getElementById('formulario');
         const mensagem = document.getElementById('mensagem');
+        const escolaSelect = document.getElementById("escola");
+        const modalidadeSelect = document.getElementById("modalidade");
+        const turmaSelect = document.getElementById("turma");
+        let alunosCadastradosSessao = [];
 
-        // Preencher data/hora ao carregar
-        document.getElementById("dataHora").value = new Date().toLocaleString();
 
+
+        const turmasPorModalidade = {
+            "Ed. Infantil": [
+                "Maternal A", "Maternal B", "Maternal A INTEGRAL", "Maternal B INTEGRAL",
+                "Jardim I A", "Jardim I B", "Jardim II A", "Jardim II B", "Jardim I B INTEGRAL", "Jardim II B INTEGRAL",
+                "Pré I A", "Pré I B", "Pré II A", "Pré II B",
+                "Pré I A INTEGRAL", "Pré II A INTEGRAL", "Pré I B INTEGRAL", "Pré II B INTEGRAL",
+                "INTEGRALG2 E G3", "INTEGRALG4 E G5"
+            ],
+            "Fund. 1": [
+                "1º I", "1º II", "1º III", "2º I", "2º II", "2º III",
+                "3º I", "3º II", "3º III", "4º I", "4º II", "4º III",
+                "5º I", "5º II", "5º III", "1° INTEGRAL", "2° INTEGRAL", "3° INTEGRAL",
+                "4° INTEGRAL", "5° INTEGRAL", "INTEGRAL1° E 2°", "INTEGRAL2° E 3°", "INTEGRAL4° E 5°"
+            ],
+            "Fund. 2": [
+                "6º I", "6º II", "6º III", "7º I", "7º II", "7º III",
+                "8º I", "8º II", "8º III", "9º I", "9º II", "9º III"
+            ]
+        };
+
+        function atualizarTurmas() {
+            const modalidade = modalidadeSelect.value;
+            const turmas = turmasPorModalidade[modalidade] || [];
+
+            turmaSelect.innerHTML = "";
+            turmas.forEach(turma => {
+                const option = document.createElement("option");
+                option.value = turma;
+                option.textContent = turma;
+                turmaSelect.appendChild(option);
+            });
+        }
+
+        function atualizarModalidadePelaEscola() {
+            const escola = escolaSelect.value;
+            modalidadeSelect.innerHTML = "";
+
+            if (escola.startsWith("CEI")) {
+            // Se for CEI, define Ed. Infantil e remove outras opções
+            const opcao = document.createElement("option");
+            opcao.value = "Ed. Infantil";
+            opcao.textContent = "Ed. Infantil";
+            modalidadeSelect.appendChild(opcao);
+        } else {
+            // Se não for CEI, adiciona todas as opções
+            const opcoes = ["Fund. 1", "Fund. 2"];
+            opcoes.forEach((valor) => {
+                const opcao = document.createElement("option");
+                opcao.value = valor;
+                opcao.textContent = valor;
+                modalidadeSelect.appendChild(opcao);
+            });
+        }
+
+            atualizarTurmas();
+        }
+
+        escolaSelect.addEventListener("change", atualizarModalidadePelaEscola);
+        modalidadeSelect.addEventListener("change", atualizarTurmas);
+        document.addEventListener("DOMContentLoaded", () => {
+            atualizarModalidadePelaEscola();
+            atualizarTurmas();
+            document.getElementById("dataHora").value = new Date().toLocaleString();
+            document.getElementById("submit").style.display = "inline-block";
+            document.getElementById("novo").style.display = "none";
+        });
+
+        document.getElementById('dataNascimento').addEventListener('input', function () {
+            let dataNascimento = new Date(this.value);
+            let hoje = new Date();
+            let idade = hoje.getFullYear() - dataNascimento.getFullYear();
+            let mes = hoje.getMonth() - dataNascimento.getMonth();
+            let dia = hoje.getDate() - dataNascimento.getDate();
+
+            if (mes < 0 || (mes === 0 && dia < 0)) {
+                idade--;
+            }
+
+            document.getElementById('idade').value = idade >= 0 ? idade : "";
+        });
+
+        function formatarDataBrasileira(dataISO) {
+          const [ano, mes, dia] = dataISO.split("-");
+          return `${dia}/${mes}/${ano}`;
+        }
         form.addEventListener('submit', function (e) {
             e.preventDefault();
             document.getElementById("dataHora").value = new Date().toLocaleString();
-
             const formData = new FormData(form);
+
+// Substitui a data no formato brasileiro, mas sem alterar o campo do formulário
+            const dataNascimentoEl = document.getElementById("dataNascimento");
+            if (dataNascimentoEl.value) {
+            const dataBrasileira = formatarDataBrasileira(dataNascimentoEl.value);
+                  formData.set("dataNascimento", dataBrasileira);
+            }
+            const peso = document.getElementById("peso").value.replace(".", ",");
+                  formData.set("peso", peso);
+
+            const altura = document.getElementById("altura").value.replace(".", ",");
+                  formData.set("altura", altura);
+            const loader = document.getElementById("loader");
+            const mensagem = document.getElementById("mensagem");
+            loader.style.display = "block"; // Mostra o loader
+            mensagem.textContent = ""; // Limpa mensagem anterior
 
             fetch(scriptURL, {
                 method: 'POST',
-                mode: 'no-cors',  // Usando no-cors para evitar problemas de CORS
+                mode: 'no-cors',
                 body: formData
             })
             .then(() => {
-                mensagem.textContent = "Cadastro enviado com sucesso!";
-                mensagem.style.color = "green";
+                const nome = document.getElementById("nomeAluno").value.trim();
+                if (nome) {
+                      alunosCadastradosSessao.push(nome);
+                      atualizarListaAlunosSessao();
+                }
+                mensagem.textContent = "Cadastro enviado com sucesso! Clique em Novo Cadastro.";
+                loader.style.display = "none";             
+                
                 form.reset();
+                atualizarModalidadePelaEscola(); // Garante que tudo seja atualizado corretamente
                 document.getElementById("dataHora").value = new Date().toLocaleString();
+                document.getElementById("submit").style.display = "none";
+                document.getElementById("novo").style.display = "inline-block";
+                
+
+                
             })
             .catch(error => {
-                alert("Erro ao enviar. Tente novamente.");
-                console.error("Erro!", error.message);
+              loader.style.display = "none";
+              alert("Erro ao enviar. Tente novamente.");
+              console.error("Erro!", error.message);
             });
         });
 
         function novoCadastro() {
             form.reset();
             mensagem.innerText = "";
+            atualizarModalidadePelaEscola();
             document.getElementById("dataHora").value = new Date().toLocaleString();
+            document.getElementById("submit").style.display = "inline-block";
+            document.getElementById("novo").style.display = "none";
         }
+
+        function atualizarListaAlunosSessao() {
+          const lista = alunosCadastradosSessao.map((nome, i) => `<li>${i + 1}. ${nome}</li>`).join("");
+          document.getElementById("listaAlunos").innerHTML = `
+          <p><strong>Alunos cadastrados nesta sessão:</strong></p>
+          <ul>${lista}</ul>
+          `;
+        }
+
     </script>
 </body>
 </html>
+
 
