@@ -91,8 +91,6 @@
                     
                     <button type="submit" id="submit">Enviar</button>
                     <button type="button" id="novo" onclick="novoCadastro()">Novo Cadastro</button>
-                    <button type="button" onclick="abrirRelatorio()">Relatório</button>
-
                 </div>
                 <div id="listaAlunos" style="margin-top: 20px;"></div>
 
@@ -264,141 +262,8 @@
           <ul>${lista}</ul>
           `;
         }
-        function abrirRelatorio() {
-    document.getElementById('modalRelatorio').style.display = 'block';
-    popularFiltrosRelatorio();
-        }
-
-        function fecharRelatorio() {
-    document.getElementById('modalRelatorio').style.display = 'none';
-    document.getElementById('resultadoRelatorio').innerHTML = '';
-        }
-
-        function imprimirRelatorio() {
-        const conteudo = document.getElementById('resultadoRelatorio').innerHTML;
-        const janela = window.open('', '', 'height=600,width=800');
-        janela.document.write('<html><head><title>Relatório</title></head><body>');
-            janela.document.write(conteudo);
-            janela.document.write('</body></html>');
-            janela.document.close();
-            janela.print();
-        }
-
-    function popularFiltrosRelatorio() {
-    const escolas = Array.from(document.getElementById('escola').options).map(opt => opt.value);
-    const modalidades = ["Ed. Infantil", "Fund. 1", "Fund. 2"];
-    const turmas = [].concat(...Object.values(turmasPorModalidade));
-
-    preencherSelect('relEscola', escolas);
-    preencherSelect('relModalidade', modalidades);
-    preencherSelect('relTurma', turmas);
-    }
-
-    function preencherSelect(id, valores) {
-    const select = document.getElementById(id);
-    select.innerHTML = '';
-    valores.forEach(valor => {
-        const option = document.createElement('option');
-        option.value = valor;
-        option.textContent = valor;
-        select.appendChild(option);
-    });
-}
-
-function carregarRelatorio() {
-  const escola = document.getElementById('relEscola').value;
-  const modalidade = document.getElementById('relModalidade').value;
-  const turma = document.getElementById('relTurma').value;
-  const periodo = document.getElementById('relPeriodo').value;
-
-  fetch(scriptURL)
-    .then(res => res.json())
-    .then(data => {
-      const filtrados = data.filter(entry =>
-        entry.escola === escola &&
-        entry.modalidade === modalidade &&
-        entry.turma === turma &&
-        entry.periodo === periodo
-      );
-
-      if (filtrados.length === 0) {
-        document.getElementById('resultadoRelatorio').innerHTML = '<p>Nenhum aluno encontrado.</p>';
-        return;
-      }
-
-      let html = `<table border="1" cellpadding="5" cellspacing="0">
-        <thead>
-          <tr>
-            <th>Nome do Aluno</th>
-            <th>Gênero</th>
-            <th>Data Nascimento</th>
-            <th>Idade</th>
-            <th>Peso</th>
-            <th>Altura</th>
-            <th>Nome do Professor</th>
-            <th>Data e Hora</th>
-          </tr>
-        </thead>
-        <tbody>
-      `;
-
-      filtrados.forEach(aluno => {
-        html += `<tr>
-          <td>${aluno.nomeAluno}</td>
-          <td>${aluno.genero}</td>
-          <td>${aluno.dataNascimento}</td>
-          <td>${aluno.idade || ''}</td>
-          <td>${aluno.peso}</td>
-          <td>${aluno.altura}</td>
-          <td>${aluno.nomeProfessor}</td>
-          <td>${aluno.dataHora}</td>
-        </tr>`;
-      });
-
-      html += '</tbody></table>';
-      document.getElementById('resultadoRelatorio').innerHTML = html;
-    })
-    .catch(err => {
-      console.error("Erro ao carregar dados:", err);
-      document.getElementById('resultadoRelatorio').innerHTML = '<p>Erro ao buscar dados.</p>';
-    });
-}
-
-
 
     </script>
-    <div id="modalRelatorio">
-  <div class="conteudo">
-    <h2>Relatório de Alunos Cadastrados</h2>
-
-    <div class="filtros">
-      <label>Escola: <select id="relEscola"></select></label>
-      <label>Modalidade:
-        <select id="relModalidade">
-          <option value="Ed. Infantil">Ed. Infantil</option>
-          <option value="Fund. 1">Fund. 1</option>
-          <option value="Fund. 2">Fund. 2</option>
-        </select>
-      </label>
-      <label>Turma: <select id="relTurma"></select></label>
-      <label>Período:
-        <select id="relPeriodo">
-          <option value="Matutino">Matutino</option>
-          <option value="Vespertino">Vespertino</option>
-          <option value="Integral">Integral</option>
-        </select>
-      </label>
-      <button onclick="carregarRelatorio()">Buscar</button>
-      <button onclick="imprimirRelatorio()">Imprimir</button>
-      <button onclick="exportarPDF()">Exportar PDF</button>
-      <button onclick="fecharRelatorio()">Fechar</button>
-    </div>
-
-    <div id="resultadoRelatorio"></div>
-  </div>
-</div>
-
-
 </body>
 </html>
 
