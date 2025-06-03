@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nutrição</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
 <body>
     <div class="box">
@@ -88,9 +90,12 @@
                 <p id="mensagem"></p>
 
                 <div class="botoes-container">
-                    
-                    <button type="submit" id="submit">Enviar</button>
-                    <button type="button" id="novo" onclick="novoCadastro()">Novo Cadastro</button>
+                    <div class="botoes-container">
+                        <button type="submit" id="submit">Enviar</button>
+                        <button type="button" id="novo" onclick="novoCadastro()">Novo Cadastro</button>
+                        <button type="button" id="btnRelatorio" onclick="abrirRelatorio()">Relatório</button>
+                    </div>
+
                 </div>
                 <div id="listaAlunos" style="margin-top: 20px;"></div>
 
@@ -98,172 +103,76 @@
         </form>
         
     </div>
-
-    <script>
-        const scriptURL = "https://script.google.com/macros/s/AKfycbxRMpd8m9M2o4_kCX_FpBeIGRrdaXMuvcGEFgjNJRXoBG-TQM_RFK1gUswgH97N9hNQow/exec";
-        const form = document.getElementById('formulario');
-        const mensagem = document.getElementById('mensagem');
-        const escolaSelect = document.getElementById("escola");
-        const modalidadeSelect = document.getElementById("modalidade");
-        const turmaSelect = document.getElementById("turma");
-        let alunosCadastradosSessao = [];
-
-
-
-        const turmasPorModalidade = {
-            "Ed. Infantil": [
-                "Maternal A", "Maternal B", "Maternal A INTEGRAL", "Maternal B INTEGRAL",
-                "Jardim I A", "Jardim I B", "Jardim II A", "Jardim II B", "Jardim I B INTEGRAL", "Jardim II B INTEGRAL",
-                "Pré I A", "Pré I B", "Pré II A", "Pré II B",
-                "Pré I A INTEGRAL", "Pré II A INTEGRAL", "Pré I B INTEGRAL", "Pré II B INTEGRAL",
-                "INTEGRALG2 E G3", "INTEGRALG4 E G5"
-            ],
-            "Fund. 1": [
-                "1º I", "1º II", "1º III", "2º I", "2º II", "2º III",
-                "3º I", "3º II", "3º III", "4º I", "4º II", "4º III",
-                "5º I", "5º II", "5º III", "1° INTEGRAL", "2° INTEGRAL", "3° INTEGRAL",
-                "4° INTEGRAL", "5° INTEGRAL", "INTEGRAL1° E 2°", "INTEGRAL2° E 3°", "INTEGRAL4° E 5°"
-            ],
-            "Fund. 2": [
-                "6º I", "6º II", "6º III", "7º I", "7º II", "7º III",
-                "8º I", "8º II", "8º III", "9º I", "9º II", "9º III"
-            ]
-        };
-
-        function atualizarTurmas() {
-            const modalidade = modalidadeSelect.value;
-            const turmas = turmasPorModalidade[modalidade] || [];
-
-            turmaSelect.innerHTML = "";
-            turmas.forEach(turma => {
-                const option = document.createElement("option");
-                option.value = turma;
-                option.textContent = turma;
-                turmaSelect.appendChild(option);
-            });
-        }
-
-        function atualizarModalidadePelaEscola() {
-            const escola = escolaSelect.value;
-            modalidadeSelect.innerHTML = "";
-
-            if (escola.startsWith("CEI")) {
-            // Se for CEI, define Ed. Infantil e remove outras opções
-            const opcao = document.createElement("option");
-            opcao.value = "Ed. Infantil";
-            opcao.textContent = "Ed. Infantil";
-            modalidadeSelect.appendChild(opcao);
-        } else {
-            // Se não for CEI, adiciona todas as opções
-            const opcoes = ["Fund. 1", "Fund. 2"];
-            opcoes.forEach((valor) => {
-                const opcao = document.createElement("option");
-                opcao.value = valor;
-                opcao.textContent = valor;
-                modalidadeSelect.appendChild(opcao);
-            });
-        }
-
-            atualizarTurmas();
-        }
-
-        escolaSelect.addEventListener("change", atualizarModalidadePelaEscola);
-        modalidadeSelect.addEventListener("change", atualizarTurmas);
-        document.addEventListener("DOMContentLoaded", () => {
-            atualizarModalidadePelaEscola();
-            atualizarTurmas();
-            document.getElementById("dataHora").value = new Date().toLocaleString();
-            document.getElementById("submit").style.display = "inline-block";
-            document.getElementById("novo").style.display = "none";
-        });
-
-        document.getElementById('dataNascimento').addEventListener('input', function () {
-            let dataNascimento = new Date(this.value);
-            let hoje = new Date();
-            let idade = hoje.getFullYear() - dataNascimento.getFullYear();
-            let mes = hoje.getMonth() - dataNascimento.getMonth();
-            let dia = hoje.getDate() - dataNascimento.getDate();
-
-            if (mes < 0 || (mes === 0 && dia < 0)) {
-                idade--;
-            }
-
-            document.getElementById('idade').value = idade >= 0 ? idade : "";
-        });
-
-        function formatarDataBrasileira(dataISO) {
-          const [ano, mes, dia] = dataISO.split("-");
-          return `${dia}/${mes}/${ano}`;
-        }
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
-            document.getElementById("dataHora").value = new Date().toLocaleString();
-            const formData = new FormData(form);
-
-// Substitui a data no formato brasileiro, mas sem alterar o campo do formulário
-            const dataNascimentoEl = document.getElementById("dataNascimento");
-            if (dataNascimentoEl.value) {
-            const dataBrasileira = formatarDataBrasileira(dataNascimentoEl.value);
-                  formData.set("dataNascimento", dataBrasileira);
-            }
-            const peso = document.getElementById("peso").value.replace(".", ",");
-                  formData.set("peso", peso);
-
-            const altura = document.getElementById("altura").value.replace(".", ",");
-                  formData.set("altura", altura);
-            const loader = document.getElementById("loader");
-            const mensagem = document.getElementById("mensagem");
-            loader.style.display = "block"; // Mostra o loader
-            mensagem.textContent = ""; // Limpa mensagem anterior
-
-            fetch(scriptURL, {
-                method: 'POST',
-                mode: 'no-cors',
-                body: formData
-            })
-            .then(() => {
-                const nome = document.getElementById("nomeAluno").value.trim();
-                if (nome) {
-                      alunosCadastradosSessao.push(nome);
-                      atualizarListaAlunosSessao();
-                }
-                mensagem.textContent = "Cadastro enviado com sucesso! Clique em Novo Cadastro.";
-                loader.style.display = "none";             
-                
-                form.reset();
-                atualizarModalidadePelaEscola(); // Garante que tudo seja atualizado corretamente
-                document.getElementById("dataHora").value = new Date().toLocaleString();
-                document.getElementById("submit").style.display = "none";
-                document.getElementById("novo").style.display = "inline-block";
-                
-
-                
-            })
-            .catch(error => {
-              loader.style.display = "none";
-              alert("Erro ao enviar. Tente novamente.");
-              console.error("Erro!", error.message);
-            });
-        });
-
-        function novoCadastro() {
-            form.reset();
-            mensagem.innerText = "";
-            atualizarModalidadePelaEscola();
-            document.getElementById("dataHora").value = new Date().toLocaleString();
-            document.getElementById("submit").style.display = "inline-block";
-            document.getElementById("novo").style.display = "none";
-        }
-
-        function atualizarListaAlunosSessao() {
-          const lista = alunosCadastradosSessao.map((nome, i) => `<li>${i + 1}. ${nome}</li>`).join("");
-          document.getElementById("listaAlunos").innerHTML = `
-          <p><strong>Alunos cadastrados nesta sessão:</strong></p>
-          <ul>${lista}</ul>
-          `;
-        }
-
+    <script src="script.js">     
     </script>
+         <!-- Painel de Relatório -->
+            <div id="painelRelatorio" style="display:none;">
+                <div class="conteudo">
+                    <div class="cabecalho-relatorio">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e6/Bras%C3%A3o_do_munic%C3%ADpio_de_Governador_Celso_Ramos_%28SC%29.png" alt="Brasão" class="brasao">
+                    <div class="titulos">
+                        <p class="secretaria">Secretaria Municipal de Educação</p>
+                        <h2>Relatório de Alunos que já fizeram a Avaliação Antropométrica.</h2>
+                        
+                    </div>
+                    </div>
+
+                    <div class="filtros">
+                        <div class="filtro-item">
+                            <label for="filtroEscola">Escola</label>
+                            <select id="filtroEscola"></select>
+                        </div>
+
+                        <div class="filtro-item">
+                            <label for="filtroModalidade">Modalidade</label>
+                            <select id="filtroModalidade">
+                            <option value="">Todas</option>
+                            <option value="Ed. Infantil">Ed. Infantil</option>
+                            <option value="Fund. 1">Fund. 1</option>
+                            <option value="Fund. 2">Fund. 2</option>
+                            </select>
+                        </div>
+
+                        <div class="filtro-item">
+                            <label for="filtroTurma">Turma</label>
+                            <select id="filtroTurma"></select>
+                        </div>
+
+                        <div class="filtro-item">
+                            <label for="filtroPeriodo">Período</label>
+                            <select id="filtroPeriodo">
+                            <option value="">Todos</option>
+                            <option value="Matutino">Matutino</option>
+                            <option value="Vespertino">Vespertino</option>
+                            <option value="Integral">Integral</option>
+                            </select>
+                        </div>
+                        </div>
+
+                    <div class="botoes-container">
+                        <button onclick="buscarRelatorio()">
+                        <i class="fas fa-search" style="margin-right: 5px;"></i> Buscar
+                        </button>
+
+                        <button onclick="imprimirRelatorio()">
+                        <i class="fas fa-print" style="margin-right: 5px;"></i> Imprimir
+                        </button>
+
+                        <button onclick="voltarAoFormulario()">
+                        <i class="fas fa-arrow-left" style="margin-right: 5px;"></i> Voltar ao Formulário
+                        </button>
+
+                    </div>
+                        <div id="loader1" class="loader1" style="display: none;">
+                        <img src="https://cdn.pixabay.com/animation/2023/11/30/10/11/10-11-02-622_512.gif" alt="Carregando..." />
+                        <p>Processando...</p>
+                        </div>
+
+
+                    <div id="tabelaRelatorio"></div>
+                </div>
+            </div>
+
 </body>
 </html>
 
