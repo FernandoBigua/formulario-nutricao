@@ -133,7 +133,7 @@ legend{
 }
 #submit{
   background-image: linear-gradient(to right, rgb(0, 92, 197), rgb(90, 20, 220));
-  width: 30%;
+  width: 50%;
   border: none;
   padding: 15px;
   color: white;
@@ -148,19 +148,34 @@ legend{
 }
 #novo{
   background-image: linear-gradient(to right, rgb(0, 172, 14), rgb(178, 195, 20));
-  width: 30%;
+  width: 50%;
   border: none;
   padding: 15px;
   color: white;
   font-size: 15px;
   cursor: pointer;
   border-radius: 10px;
-  
               
   
 }
 #novo:hover{
   background-image: linear-gradient(to right, rgb(0, 172, 14), rgb(119, 195, 19));
+}
+
+#btnRelatorio{
+  background-image: linear-gradient(to right, rgb(224, 40, 154), rgb(220, 20, 70));
+  width: 50%;
+  border: none;
+  padding: 15px;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+  border-radius: 10px;
+              
+  
+}
+#btnRelatorio:hover{
+  background-image: linear-gradient(to right, rgb(167, 11, 96), rgb(245, 6, 45));
 }
 #mensagem{
   background-image: linear-gradient(to right, rgb(255, 0, 76), rgb(7, 131, 125));
@@ -171,4 +186,158 @@ legend{
   font-size: 20px;
   padding: 15px;
 
+}
+/* Estilos para o relatório no modal */
+#painelRelatorio {
+  display: none;
+  position: absolute;
+  top: 20px; left: 30px;
+  width: 95%; height: 95%;
+  background-color: rgba(248, 245, 245, 0.5);
+  
+}
+
+#painelRelatorio .conteudo {
+  background: white;
+  margin: 5% auto;
+  padding: 20px;
+  width: 90%;
+  max-height: 90%;
+  overflow: auto;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+.cabecalho-relatorio {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.brasao {
+  height: 80px;
+  width: auto;
+}
+
+.titulos h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.secretaria {
+  margin: 0;
+  font-size: 16px;
+  color: #555;
+}
+
+
+#painelRelatorio .filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+#painelRelatorio .filtros label {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+}
+
+#tabelaRelatorio {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: sans-serif;
+  margin-top: 10px;
+}
+
+#tabelaRelatorio th,
+#tabelaRelatorio td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+#tabelaRelatorio th {
+  background-color: #f2f2f2;
+}
+
+#tabelaRelatorio tr:nth-child(even) {
+  background-color: #d1cdcd;
+}
+
+#tabelaRelatorio tr:hover {
+  background-color: #e0f7fa; /* azul clarinho, pode ajustar */
+  cursor: pointer;
+}
+#painelRelatorio button {
+  background: linear-gradient(to right, #1976d2, #42a5f5);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.3s;
+}
+
+#painelRelatorio button:hover {
+  background: linear-gradient(to right, #1565c0, #1e88e5);
+  cursor: pointer;
+}
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 20px;
+  
+}
+
+.filtros .filtro-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 14px;
+  color: #333;
+}
+
+.filtros .filtro-item label {
+  margin-bottom: 4px;
+  font-weight: bold;
+}
+
+.filtros .filtro-item select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  min-width: 160px;
+  outline: none;
+  transition: border 0.3s;
+}
+
+.filtros .filtro-item select:focus {
+  border-color: #1976d2;
+  box-shadow: 0 0 5px rgba(25, 118, 210, 0.3);
+}
+.loader1 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+  color: #da0808;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.loader1 img {
+  width: 80px;
+  height: 80px;
+  
 }
