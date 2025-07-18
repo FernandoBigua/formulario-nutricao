@@ -6,7 +6,7 @@ body{
 .box{
   color: white;
   position: absolute;
-  top: 32%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%,-30%);
   background-color: rgba(0, 0, 0, 0.6);
@@ -340,4 +340,32 @@ legend{
   width: 80px;
   height: 80px;
   
+}
+
+.cabecalho-formulario {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 15px;
+}
+
+.brasao-rotativo {
+  width: 70px;
+  height: auto;
+  animation: girarY 12s linear infinite;
+  transform-style: preserve-3d;
+}
+
+@keyframes girarY {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+.texto-cabecalho {
+  font-size: 16px;
+  line-height: 1.4;
 }
