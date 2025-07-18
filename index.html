@@ -9,13 +9,24 @@
 
 </head>
 <body>
+   
+
     <div class="box">
+         <div class="cabecalho-formulario">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/e/e6/Bras%C3%A3o_do_munic%C3%ADpio_de_Governador_Celso_Ramos_%28SC%29.png" alt="Brasão de Governador Celso Ramos" class="brasao-rotativo">
+  <div class="texto-cabecalho">
+    <strong>ESTADO DE SANTA CATARINA</strong><br>
+    <strong>MUNICÍPIO DE GOVERNADOR CELSO RAMOS</strong><br>
+    <strong>SECRETARIA DE EDUCAÇÃO</strong>
+  </div>
+</div>
         <form id="formulario">
             <fieldset>
                 <legend><b>Avaliação Antropométrica</b></legend>
 
                 <label for="escola">Escolha a Escola:</label>
                 <select id="escola" name="escola" required>
+                    <option value="" disabled selected>Selecione uma Escola.</option>
                     <option value="CEI DULCE GODINHO NAZÁRIO">CEI DULCE GODINHO NAZÁRIO</option>
                     <option value="CEI JÚLIA SAGÁS">CEI JÚLIA SAGÁS</option>
                     <option value="CEI PROF.ª EUDES MAFRA">CEI PROF.ª EUDES MAFRA</option>
@@ -36,16 +47,20 @@
 
                 <label for="modalidade">Modalidade de Ensino:</label>
                 <select id="modalidade" name="modalidade" required>
+                    <option value="" disabled selected>Selecione uma Modalidade</option>
                     <option value="Ed. Infantil">Ed. Infantil</option>
                     <option value="Fund. 1">Fund. 1</option>
                     <option value="Fund. 2">Fund. 2</option>
                 </select>
 
                 <label for="turma">Turma:</label>
-                <select id="turma" name="turma" required></select><br><br>
+                <select id="turma" name="turma" required>
+                  <option value="" disabled selected>Selecione a Turma.</option>
+                </select><br><br>
 
                 <label for="periodo">Período:</label>
                 <select id="periodo" name="periodo" required>
+                    <option value="" disabled selected>Selecione o Período</option>
                     <option value="Matutino">Matutino</option>
                     <option value="Vespertino">Vespertino</option>
                     <option value="Integral">Integral</option>
@@ -175,5 +190,6 @@
 
 </body>
 </html>
+
 
 
