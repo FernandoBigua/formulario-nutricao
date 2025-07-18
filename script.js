@@ -1,5 +1,4 @@
- 
-   const scriptURL = "https://script.google.com/macros/s/AKfycbxRMpd8m9M2o4_kCX_FpBeIGRrdaXMuvcGEFgjNJRXoBG-TQM_RFK1gUswgH97N9hNQow/exec";
+const scriptURL = "https://script.google.com/macros/s/AKfycbxRMpd8m9M2o4_kCX_FpBeIGRrdaXMuvcGEFgjNJRXoBG-TQM_RFK1gUswgH97N9hNQow/exec";
 const form = document.getElementById('formulario');
 const mensagem = document.getElementById('mensagem');
 const escolaSelect = document.getElementById("escola");
@@ -32,6 +31,14 @@ function atualizarTurmas() {
     const turmas = turmasPorModalidade[modalidade] || [];
 
     turmaSelect.innerHTML = "";
+    
+    const selecioneOption = document.createElement("option");
+    selecioneOption.value = "";
+    selecioneOption.textContent = "Selecione";
+    selecioneOption.disabled = true;
+    selecioneOption.selected = true;
+    turmaSelect.appendChild(selecioneOption);
+
     turmas.forEach(turma => {
         const option = document.createElement("option");
         option.value = turma;
@@ -40,18 +47,24 @@ function atualizarTurmas() {
     });
 }
 
+
 function atualizarModalidadePelaEscola() {
     const escola = escolaSelect.value;
     modalidadeSelect.innerHTML = "";
 
+    const selecioneOption = document.createElement("option");
+    selecioneOption.value = "";
+    selecioneOption.textContent = "Selecione";
+    selecioneOption.disabled = true;
+    selecioneOption.selected = true;
+    modalidadeSelect.appendChild(selecioneOption);
+
     if (escola.startsWith("CEI")) {
-        // Se for CEI, define Ed. Infantil e remove outras opções
         const opcao = document.createElement("option");
         opcao.value = "Ed. Infantil";
         opcao.textContent = "Ed. Infantil";
         modalidadeSelect.appendChild(opcao);
     } else {
-        // Se não for CEI, adiciona todas as opções
         const opcoes = ["Fund. 1", "Fund. 2"];
         opcoes.forEach((valor) => {
             const opcao = document.createElement("option");
@@ -63,6 +76,7 @@ function atualizarModalidadePelaEscola() {
 
     atualizarTurmas();
 }
+
 
 escolaSelect.addEventListener("change", atualizarModalidadePelaEscola);
 modalidadeSelect.addEventListener("change", atualizarTurmas);
@@ -97,6 +111,17 @@ function formatarDataBrasileira(dataISO) {
 form.addEventListener('submit', function (e) {
     e.preventDefault();
     document.getElementById("dataHora").value = new Date().toLocaleString();
+    // Transforma nome do aluno e professor em caixa alta
+const nomeAlunoEl = document.getElementById("nomeAluno");
+if (nomeAlunoEl) {
+    nomeAlunoEl.value = nomeAlunoEl.value.toUpperCase();
+}
+
+const professorEl = document.getElementById("nomeProfessor");
+if (professorEl) {
+    professorEl.value = professorEl.value.toUpperCase();
+}
+
     const formData = new FormData(form);
 
     // Substitui a data no formato brasileiro, mas sem alterar o campo do formulário
@@ -345,7 +370,6 @@ function imprimirRelatorio() {
     janela.document.close();
     janela.print();
 }
-
 
 
 
