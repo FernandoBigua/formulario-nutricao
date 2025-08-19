@@ -8,17 +8,15 @@ let alunosCadastradosSessao = [];
 
 const turmasPorModalidade = {
     "Ed. Infantil": [
-        "Maternal A", "Maternal B", "Maternal A INTEGRAL", "Maternal B INTEGRAL",
-        "Jardim I A", "Jardim I B", "Jardim II A", "Jardim II B", "Jardim I B INTEGRAL", "Jardim II B INTEGRAL",
-        "Pré I A", "Pré I B", "Pré II A", "Pré II B",
-        "Pré I A INTEGRAL", "Pré II A INTEGRAL", "Pré I B INTEGRAL", "Pré II B INTEGRAL",
-        "INTEGRALG2 E G3", "INTEGRALG4 E G5"
+        "Maternal A", "Maternal B", 
+        "Jardim I A", "Jardim I B", "Jardim II A", "Jardim II B",
+        "Pré I A", "Pré I B", "Pré II A", "Pré II B"
+       
     ],
     "Fund. 1": [
         "1º I", "1º II", "1º III", "2º I", "2º II", "2º III",
         "3º I", "3º II", "3º III", "4º I", "4º II", "4º III",
-        "5º I", "5º II", "5º III", "1° INTEGRAL", "2° INTEGRAL", "3° INTEGRAL",
-        "4° INTEGRAL", "5° INTEGRAL", "INTEGRAL1° E 2°", "INTEGRAL2° E 3°", "INTEGRAL4° E 5°"
+        "5º I", "5º II", "5º III"
     ],
     "Fund. 2": [
         "6º I", "6º II", "6º III", "7º I", "7º II", "7º III",
@@ -370,6 +368,7 @@ function imprimirRelatorio() {
     janela.document.close();
     janela.print();
 }
+
 
 
 
