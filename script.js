@@ -11,7 +11,6 @@ const turmasPorModalidade = {
         "Maternal A", "Maternal B", 
         "Jardim I A", "Jardim I B", "Jardim II A", "Jardim II B",
         "Pré I A", "Pré I B", "Pré II A", "Pré II B"
-       
     ],
     "Fund. 1": [
         "1º I", "1º II", "1º III", "2º I", "2º II", "2º III",
@@ -45,7 +44,6 @@ function atualizarTurmas() {
     });
 }
 
-
 function atualizarModalidadePelaEscola() {
     const escola = escolaSelect.value;
     modalidadeSelect.innerHTML = "";
@@ -74,7 +72,6 @@ function atualizarModalidadePelaEscola() {
 
     atualizarTurmas();
 }
-
 
 escolaSelect.addEventListener("change", atualizarModalidadePelaEscola);
 modalidadeSelect.addEventListener("change", atualizarTurmas);
@@ -109,16 +106,17 @@ function formatarDataBrasileira(dataISO) {
 form.addEventListener('submit', function (e) {
     e.preventDefault();
     document.getElementById("dataHora").value = new Date().toLocaleString();
+    
     // Transforma nome do aluno e professor em caixa alta
-const nomeAlunoEl = document.getElementById("nomeAluno");
-if (nomeAlunoEl) {
-    nomeAlunoEl.value = nomeAlunoEl.value.toUpperCase();
-}
+    const nomeAlunoEl = document.getElementById("nomeAluno");
+    if (nomeAlunoEl) {
+        nomeAlunoEl.value = nomeAlunoEl.value.toUpperCase();
+    }
 
-const professorEl = document.getElementById("nomeProfessor");
-if (professorEl) {
-    professorEl.value = professorEl.value.toUpperCase();
-}
+    const professorEl = document.getElementById("nomeProfessor");
+    if (professorEl) {
+        professorEl.value = professorEl.value.toUpperCase();
+    }
 
     const formData = new FormData(form);
 
@@ -136,7 +134,7 @@ if (professorEl) {
 
     const loader = document.getElementById("loader");
     mensagem.textContent = "";
-    loader.style.display = "block"; // Mostra o loader
+    loader.style.display = "flex"; // Mostra o loader
 
     fetch(scriptURL, {
         method: 'POST',
@@ -177,7 +175,7 @@ function novoCadastro() {
 function atualizarListaAlunosSessao() {
     const lista = alunosCadastradosSessao.map((nome, i) => `<li>${i + 1}. ${nome}</li>`).join("");
     document.getElementById("listaAlunos").innerHTML = `
-        <p><strong>Alunos cadastrados nesta sessão:</strong></p>
+        <p>Alunos cadastrados nesta sessão:</p>
         <ul>${lista}</ul>
     `;
 }
@@ -188,13 +186,27 @@ function atualizarModalidadeRelatorio() {
     const modalidadeSelect = document.getElementById("filtroModalidade");
     modalidadeSelect.innerHTML = "";
 
+    // Adiciona opção vazia/Todas para modalidades
+    const optionTodas = document.createElement("option");
+    optionTodas.value = "";
+    optionTodas.textContent = "Todas";
+    modalidadeSelect.appendChild(optionTodas);
+
     if (escola.startsWith("CEI")) {
         const option = document.createElement("option");
         option.value = "Ed. Infantil";
         option.textContent = "Ed. Infantil";
         modalidadeSelect.appendChild(option);
-    } else {
+    } else if (escola !== "") {
         ["Fund. 1", "Fund. 2"].forEach(valor => {
+            const option = document.createElement("option");
+            option.value = valor;
+            option.textContent = valor;
+            modalidadeSelect.appendChild(option);
+        });
+    } else {
+        // Se nenhuma escola for selecionada, lista todas as modalidades
+        ["Ed. Infantil", "Fund. 1", "Fund. 2"].forEach(valor => {
             const option = document.createElement("option");
             option.value = valor;
             option.textContent = valor;
@@ -209,166 +221,256 @@ function atualizarModalidadeRelatorio() {
 function atualizarTurmasRelatorio() {
     const modalidade = document.getElementById("filtroModalidade").value;
     const turmaSelect = document.getElementById("filtroTurma");
-    const turmas = turmasPorModalidade[modalidade] || [];
-
+    
     turmaSelect.innerHTML = "";
-    turmas.forEach(turma => {
-        const option = document.createElement("option");
-        option.value = turma;
-        option.textContent = turma;
-        turmaSelect.appendChild(option);
-    });
+
+    // Adiciona opção vazia/Todas para turmas
+    const optionTodas = document.createElement("option");
+    optionTodas.value = "";
+    optionTodas.textContent = "Todas";
+    turmaSelect.appendChild(optionTodas);
+
+    if (modalidade) {
+        const turmas = turmasPorModalidade[modalidade] || [];
+        turmas.forEach(turma => {
+            const option = document.createElement("option");
+            option.value = turma;
+            option.textContent = turma;
+            turmaSelect.appendChild(option);
+        });
+    } else {
+        // Se nenhuma modalidade for selecionada, lista todas as turmas de todas as modalidades
+        Object.values(turmasPorModalidade).flat().forEach(turma => {
+            const option = document.createElement("option");
+            option.value = turma;
+            option.textContent = turma;
+            turmaSelect.appendChild(option);
+        });
+    }
 }
 
-// Função chamada ao clicar no botão "Relatório"
+// --- NAVEGAÇÃO ENTRE AS TELAS ---
+
+function abrirFormulario() {
+    document.getElementById("telaInicial").style.display = "none";
+    document.getElementById("painelRelatorio").style.display = "none";
+    document.getElementById("telaFormulario").style.display = "block";
+}
+
 function abrirRelatorio() {
-    document.getElementById("formulario").style.display = "none";
+    document.getElementById("telaInicial").style.display = "none";
+    document.getElementById("telaFormulario").style.display = "none";
     document.getElementById("painelRelatorio").style.display = "block";
 
     // Carrega as opções de escolas copiando do formulário principal
     const escolaSelect = document.getElementById("filtroEscola");
-    escolaSelect.innerHTML = document.getElementById("escola").innerHTML;
+    escolaSelect.innerHTML = '<option value="" selected>Todas as Escolas</option>' + document.getElementById("escola").innerHTML;
+    
+    const optionDesabilitada = escolaSelect.querySelector('option[disabled]');
+    if (optionDesabilitada) {
+        optionDesabilitada.remove();
+    }
 
-    // Remove event listeners antigos (caso usuário volte várias vezes)
     escolaSelect.replaceWith(escolaSelect.cloneNode(true));
     document.getElementById("filtroModalidade").replaceWith(document.getElementById("filtroModalidade").cloneNode(true));
 
-    // Reatribui os elementos clonados
     const novoEscolaSelect = document.getElementById("filtroEscola");
     const novoModalidadeSelect = document.getElementById("filtroModalidade");
 
-    // Adiciona os listeners atualizados
     novoEscolaSelect.addEventListener("change", atualizarModalidadeRelatorio);
     novoModalidadeSelect.addEventListener("change", atualizarTurmasRelatorio);
-
-    // Dispara evento inicial para popular os filtros corretamente
     novoEscolaSelect.dispatchEvent(new Event("change"));
-    const filtroPeriodo = document.getElementById("filtroPeriodo");
-    // Assumindo que filtroPeriodo seja um select com opções fixas, não precisa copiar opções dinâmicas
-}
 
-
-
+    // Pré-preenche o select de Ano com o ano atual Fazer um ajuste...
+    const filtroAnoSelect = document.getElementById("filtroAno");
+    const anoAtual = new Date().getFullYear();
+    filtroAnoSelect.innerHTML = `<option value="${anoAtual}">${anoAtual}</option><option value="2025">2025</option>`;
     
+    // Limpa a tabela e aguarda o usuário clicar em "Buscar"
+    const tabela = document.getElementById('tabelaRelatorio');
+    tabela.innerHTML = '<p style="text-align: center; color: #94a3b8; padding: 20px;">Use os filtros acima e clique em "Buscar" para carregar os dados.</p>';
+}
 
-
-function voltarAoFormulario() {
+function voltarTelaInicial() {
+    document.getElementById("telaFormulario").style.display = "none";
     document.getElementById("painelRelatorio").style.display = "none";
-    document.getElementById("formulario").style.display = "block";
+    document.getElementById("telaInicial").style.display = "flex";
 }
-function formatarData(dataString) {
-    if (!dataString) return "";
-
-    const data = new Date(dataString);
-    if (isNaN(data.getTime())) return dataString; // Se não for data válida, retorna original
-
-    const dia = String(data.getDate()).padStart(2, '0');
-    const mes = String(data.getMonth() + 1).padStart(2, '0');
-    const ano = data.getFullYear();
-
-    return `${dia}/${mes}/${ano}`;
-}
-
-
-function buscarRelatorio() {
+function buscarRelatorio(isInitialLoad = false) {
     const escola = document.getElementById("filtroEscola").value;
     const modalidade = document.getElementById("filtroModalidade").value;
     const turma = document.getElementById("filtroTurma").value.trim();
     const periodo = document.getElementById("filtroPeriodo").value;
+    const filtroAnoSelect = document.getElementById("filtroAno");
+    let anoSelecionado = filtroAnoSelect.value;
+    
     const loader = document.getElementById('loader1');
     const tabela = document.getElementById('tabelaRelatorio');
 
     loader.style.display = 'flex'; // Mostra o loader
     tabela.innerHTML = ''; // Limpa a tabela
 
-        
     function formatarDataISOParaBrasileiro(dataISO) {
+        if (!dataISO) return "";
         const data = new Date(dataISO);
+        if (isNaN(data.getTime())) return dataISO; // Retorna original se inválido
         const dia = String(data.getDate()).padStart(2, '0');
         const mes = String(data.getMonth() + 1).padStart(2, '0');
         const ano = data.getFullYear();
         return `${dia}/${mes}/${ano}`;
-        }
+    }
 
     function formatarDataHoraISO(dataISO) {
-            const data = new Date(dataISO);
-            const dia = String(data.getDate()).padStart(2, '0');
-            const mes = String(data.getMonth() + 1).padStart(2, '0');
-            const ano = data.getFullYear();
-            const horas = String(data.getHours()).padStart(2, '0');
-            const minutos = String(data.getMinutes()).padStart(2, '0');
-            return `${dia}/${mes}/${ano} ${horas}:${minutos}`;
-        }
+        if (!dataISO) return "";
+        const data = new Date(dataISO);
+        if (isNaN(data.getTime())) return dataISO;
+        const dia = String(data.getDate()).padStart(2, '0');
+        const mes = String(data.getMonth() + 1).padStart(2, '0');
+        const ano = data.getFullYear();
+        const horas = String(data.getHours()).padStart(2, '0');
+        const minutos = String(data.getMinutes()).padStart(2, '0');
+        return `${dia}/${mes}/${ano} ${horas}:${minutos}`;
+    }
 
+    // Função para obter de forma robusta o ano do registro
+    function obterAnoDoRegistro(aluno) {
+        const dataString = aluno.data;
+        if (!dataString) return null;
+        
+        // Tenta parsear direto
+        const d = new Date(dataString);
+        if (!isNaN(d.getTime())) {
+            return d.getFullYear();
+        }
+        
+        // Se for string no formato BR "11/06/2026"
+        const match = dataString.match(/\b(20\d{2})\b/);
+        if (match) {
+            return parseInt(match[1], 10);
+        }
+        
+        const partes = dataString.split('/');
+        if (partes.length === 3) {
+            const anoParte = partes[2].split(' ')[0];
+            const anoNum = parseInt(anoParte, 10);
+            if (!isNaN(anoNum)) return anoNum;
+        }
+        
+        return null;
+    }
 
     fetch(`${scriptURL}?action=read`)
         .then(res => res.json())
         .then(data => {
-            const alunosFiltrados = data.filter(aluno =>
-                (!escola || aluno.escola === escola) &&
-                (!modalidade || aluno.modalidade === modalidade) &&
-                (!turma || aluno.turma === turma) &&
-                (!periodo || aluno.periodo === periodo)
-            );
+            // 1. Extrair os anos únicos existentes nos dados
+            const anosEncontrados = new Set();
+            data.forEach(aluno => {
+                const ano = obterAnoDoRegistro(aluno);
+                if (ano) anosEncontrados.add(ano);
+            });
+
+            const anoAtualSistema = new Date().getFullYear();
+            if (anosEncontrados.size === 0) {
+                anosEncontrados.add(anoAtualSistema);
+            }
+
+            const listaAnos = Array.from(anosEncontrados).sort((a, b) => b - a);
+
+            // 2. Preencher o select de Ano
+            const valorAtualFiltro = filtroAnoSelect.value;
+            filtroAnoSelect.innerHTML = "";
+            
+            listaAnos.forEach(ano => {
+                const option = document.createElement("option");
+                option.value = ano;
+                option.textContent = ano;
+                filtroAnoSelect.appendChild(option);
+            });
+
+            // 3. Definir qual ano será filtrado
+            if (isInitialLoad || !valorAtualFiltro) {
+                if (anosEncontrados.has(anoAtualSistema)) {
+                    filtroAnoSelect.value = anoAtualSistema;
+                    anoSelecionado = anoAtualSistema.toString();
+                } else {
+                    filtroAnoSelect.value = listaAnos[0];
+                    anoSelecionado = listaAnos[0].toString();
+                }
+            } else {
+                filtroAnoSelect.value = valorAtualFiltro;
+                anoSelecionado = valorAtualFiltro;
+            }
+
+            // 4. Filtrar alunos combinando todos os critérios
+            const alunosFiltrados = data.filter(aluno => {
+                const anoAluno = obterAnoDoRegistro(aluno);
+                
+                const matchesAno = !anoSelecionado || (anoAluno && anoAluno.toString() === anoSelecionado);
+                const matchesEscola = !escola || aluno.escola === escola;
+                const matchesModalidade = !modalidade || aluno.modalidade === modalidade;
+                const matchesTurma = !turma || aluno.turma === turma;
+                const matchesPeriodo = !periodo || aluno.periodo === periodo;
+
+                return matchesAno && matchesEscola && matchesModalidade && matchesTurma && matchesPeriodo;
+            });
 
             if (alunosFiltrados.length === 0) {
-                document.getElementById("tabelaRelatorio").innerHTML = "<p>Nenhum aluno encontrado com os filtros selecionados.</p>";
-                loader.style.display = 'none'; // oculta loader
+                tabela.innerHTML = "<p>Nenhum aluno encontrado com os filtros selecionados.</p>";
+                loader.style.display = 'none';
                 return;
             }
-            alunosFiltrados.sort((a, b) => a.aluno.localeCompare(b.aluno)); // Ordenar por nome
-           let totalAlunos = alunosFiltrados.length;
-                loader.style.display = 'none'; // oculta loader
+
+            // Ordenar por nome de aluno
+            alunosFiltrados.sort((a, b) => {
+                const nomeA = a.aluno || "";
+                const nomeB = b.aluno || "";
+                return nomeA.localeCompare(nomeB);
+            });
+
+            let totalAlunos = alunosFiltrados.length;
+            loader.style.display = 'none';
+
             let html = `
                 <p><strong>Total de alunos encontrados: ${totalAlunos}</strong></p>
-                <table border="1" cellpadding="5" style="width:100%; border-collapse: collapse;">
+                <table>
                     <thead>
                         <tr>
                             <th>Nome</th>
                             <th>Gênero</th>
                             <th>Data Nasc.</th>
-                            <th>Peso</th>
-                            <th>Altura</th>
+                            <th>Peso (kg)</th>
+                            <th>Altura (m)</th>
                             <th>Professor</th>
-                            <th>Data/Hora</th>
+                            <th>Data/Hora Registro</th>
                         </tr>
                     </thead>
                     <tbody>
             `;
 
-            
             alunosFiltrados.forEach(aluno => {
                 html += `
                     <tr>
-                        <td>${aluno.aluno}</td>
-                        <td>${aluno.genero}</td>
+                        <td style="font-weight: 500;">${aluno.aluno || ""}</td>
+                        <td>${aluno.genero || ""}</td>
                         <td>${formatarDataISOParaBrasileiro(aluno.nascimento)}</td>
-                        <td>${aluno.peso}</td>
-                        <td>${aluno.altura}</td>
-                        <td>${aluno.professor}</td>
+                        <td>${aluno.peso || ""}</td>
+                        <td>${aluno.altura || ""}</td>
+                        <td>${aluno.professor || ""}</td>
                         <td>${formatarDataHoraISO(aluno.data)}</td>
                     </tr>
                 `;
-
             });
 
             html += "</tbody></table>";
-            document.getElementById("tabelaRelatorio").innerHTML = html;
+            tabela.innerHTML = html;
         })
         .catch(err => {
             console.error("Erro ao buscar relatório:", err);
-            document.getElementById("tabelaRelatorio").innerHTML = "<p>Erro ao carregar os dados.</p>";
+            tabela.innerHTML = "<p>Erro ao carregar os dados. Verifique sua conexão.</p>";
+            loader.style.display = 'none';
         });
 }
 
 function imprimirRelatorio() {
-    const conteudo = document.getElementById("tabelaRelatorio").innerHTML;
-    const janela = window.open("", "_blank");
-    janela.document.write(`<html><head><title>Relatório de Alunos</title></head><body>${conteudo}</body></html>`);
-    janela.document.close();
-    janela.print();
+    window.print();
 }
-
-
-
-

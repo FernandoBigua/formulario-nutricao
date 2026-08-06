@@ -4,22 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nutrição</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
 </head>
 <body>
-   
+    
+    <div class="wave-bg">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
 
-    <div class="box">
-         <div class="cabecalho-formulario">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/e/e6/Bras%C3%A3o_do_munic%C3%ADpio_de_Governador_Celso_Ramos_%28SC%29.png" alt="Brasão de Governador Celso Ramos" class="brasao-rotativo">
-  <div class="texto-cabecalho">
-    <strong>ESTADO DE SANTA CATARINA</strong><br>
-    <strong>MUNICÍPIO DE GOVERNADOR CELSO RAMOS</strong><br>
-    <strong>SECRETARIA DE EDUCAÇÃO</strong>
-  </div>
-</div>
+    <div id="telaInicial" class="cards-container">
+        <div class="card" onclick="abrirFormulario()">
+            <i class="fas fa-clipboard-list icone-card"></i>
+            <h3>Nova Avaliação</h3>
+            <p>Cadastrar dados antropométricos dos alunos</p>
+        </div>
+        <div class="card" onclick="abrirRelatorio()">
+            <i class="fas fa-chart-pie icone-card"></i>
+            <h3>Relatório</h3>
+            <p>Visualizar e imprimir os dados avaliados</p>
+        </div>
+    </div>
+
+    <div class="box" id="telaFormulario" style="display: none;">
+        <div class="cabecalho-formulario">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e6/Bras%C3%A3o_do_munic%C3%ADpio_de_Governador_Celso_Ramos_%28SC%29.png" alt="Brasão de Governador Celso Ramos" class="brasao-rotativo">
+            <div class="texto-cabecalho">
+                <strong>ESTADO DE SANTA CATARINA</strong><br>
+                <strong>MUNICÍPIO DE GOVERNADOR CELSO RAMOS</strong><br>
+                <strong>SECRETARIA DE EDUCAÇÃO</strong>
+            </div>
+        </div>
         <form id="formulario">
             <fieldset>
                 <legend><b>Avaliação Antropométrica</b></legend>
@@ -63,7 +83,6 @@
                     <option value="" disabled selected>Selecione o Período</option>
                     <option value="Matutino">Matutino</option>
                     <option value="Vespertino">Vespertino</option>
-                    
                 </select><br><br>
 
                 <div class="inputBox">
@@ -98,98 +117,90 @@
                 </div><br>
 
                 <input type="hidden" id="dataHora" name="dataHora">
-                <div id="loader" style="display:none; text-align:center; margin-top: 10px;">
-                  <img src="https://i.gifer.com/ZZ5H.gif" alt="Enviando..." width="50">
-                  <p>Enviando dados...</p>
-              </div>
+                <div id="loader" class="loader-container" style="display:none;">
+                    <div class="spinner"></div>
+                    <p>Enviando dados...</p>
+                </div>
                 <p id="mensagem"></p>
 
                 <div class="botoes-container">
-                    <div class="botoes-container">
-                        <button type="submit" id="submit">Enviar</button>
-                        <button type="button" id="novo" onclick="novoCadastro()">Novo Cadastro</button>
-                        <button type="button" id="btnRelatorio" onclick="abrirRelatorio()">Relatório</button>
-                    </div>
-
+                    <button type="submit" id="submit">Enviar</button>
+                    <button type="button" id="novo" onclick="novoCadastro()">Novo Cadastro</button>
+                    <button type="button" id="btnRelatorio" onclick="voltarTelaInicial()" style="background: linear-gradient(135deg, #64748b, #475569);">
+                        <i class="fas fa-home" style="margin-right: 5px;"></i> Início
+                    </button>
                 </div>
                 <div id="listaAlunos" style="margin-top: 20px;"></div>
-
             </fieldset>
         </form>
-        
     </div>
-    <script src="script.js">     
-    </script>
-         <!-- Painel de Relatório -->
-            <div id="painelRelatorio" style="display:none;">
-                <div class="conteudo">
-                    <div class="cabecalho-relatorio">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e6/Bras%C3%A3o_do_munic%C3%ADpio_de_Governador_Celso_Ramos_%28SC%29.png" alt="Brasão" class="brasao">
-                    <div class="titulos">
-                        <p class="secretaria">Secretaria Municipal de Educação</p>
-                        <h2>Relatório de Alunos que já fizeram a Avaliação Antropométrica.</h2>
-                        
-                    </div>
-                    </div>
 
-                    <div class="filtros">
-                        <div class="filtro-item">
-                            <label for="filtroEscola">Escola</label>
-                            <select id="filtroEscola"></select>
-                        </div>
-
-                        <div class="filtro-item">
-                            <label for="filtroModalidade">Modalidade</label>
-                            <select id="filtroModalidade">
-                            <option value="">Todas</option>
-                            <option value="Ed. Infantil">Ed. Infantil</option>
-                            <option value="Fund. 1">Fund. 1</option>
-                            <option value="Fund. 2">Fund. 2</option>
-                            </select>
-                        </div>
-
-                        <div class="filtro-item">
-                            <label for="filtroTurma">Turma</label>
-                            <select id="filtroTurma"></select>
-                        </div>
-
-                        <div class="filtro-item">
-                            <label for="filtroPeriodo">Período</label>
-                            <select id="filtroPeriodo">
-                            <option value="">Todos</option>
-                            <option value="Matutino">Matutino</option>
-                            <option value="Vespertino">Vespertino</option>
-                            <option value="Integral">Integral</option>
-                            </select>
-                        </div>
-                        </div>
-
-                    <div class="botoes-container">
-                        <button onclick="buscarRelatorio()">
-                        <i class="fas fa-search" style="margin-right: 5px;"></i> Buscar
-                        </button>
-
-                        <button onclick="imprimirRelatorio()">
-                        <i class="fas fa-print" style="margin-right: 5px;"></i> Imprimir
-                        </button>
-
-                        <button onclick="voltarAoFormulario()">
-                        <i class="fas fa-arrow-left" style="margin-right: 5px;"></i> Voltar ao Formulário
-                        </button>
-
-                    </div>
-                        <div id="loader1" class="loader1" style="display: none;">
-                        <img src="https://cdn.pixabay.com/animation/2023/11/30/10/11/10-11-02-622_512.gif" alt="Carregando..." />
-                        <p>Processando...</p>
-                        </div>
-
-
-                    <div id="tabelaRelatorio"></div>
+    <div id="painelRelatorio" style="display:none;">
+        <div class="conteudo">
+            <div class="cabecalho-relatorio">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e6/Bras%C3%A3o_do_munic%C3%ADpio_de_Governador_Celso_Ramos_%28SC%29.png" alt="Brasão" class="brasao">
+                <div class="titulos">
+                    <p class="secretaria">Secretaria Municipal de Educação</p>
+                    <h2>Relatório de Avaliação Antropométrica</h2>
                 </div>
             </div>
 
+            <div class="filtros">
+                <div class="filtro-item">
+                    <label for="filtroAno">Ano</label>
+                    <select id="filtroAno"></select>
+                </div>
+                <div class="filtro-item">
+                    <label for="filtroEscola">Escola</label>
+                    <select id="filtroEscola"></select>
+                </div>
+                <div class="filtro-item">
+                    <label for="filtroModalidade">Modalidade</label>
+                    <select id="filtroModalidade">
+                        <option value="">Todas</option>
+                        <option value="Ed. Infantil">Ed. Infantil</option>
+                        <option value="Fund. 1">Fund. 1</option>
+                        <option value="Fund. 2">Fund. 2</option>
+                    </select>
+                </div>
+                <div class="filtro-item">
+                    <label for="filtroTurma">Turma</label>
+                    <select id="filtroTurma"></select>
+                </div>
+                <div class="filtro-item">
+                    <label for="filtroPeriodo">Período</label>
+                    <select id="filtroPeriodo">
+                        <option value="">Todos</option>
+                        <option value="Matutino">Matutino</option>
+                        <option value="Vespertino">Vespertino</option>
+                        <option value="Integral">Integral</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="botoes-container">
+                <button onclick="buscarRelatorio()">
+                    <i class="fas fa-search" style="margin-right: 5px;"></i> Buscar
+                </button>
+                <button onclick="imprimirRelatorio()">
+                    <i class="fas fa-print" style="margin-right: 5px;"></i> Imprimir
+                </button>
+                <button onclick="voltarTelaInicial()" style="background: linear-gradient(135deg, #64748b, #475569);">
+                    <i class="fas fa-home" style="margin-right: 5px;"></i> Voltar ao Início
+                </button>
+            </div>
+            
+            <div id="loader1" class="loader-container" style="display: none;">
+                <div class="spinner"></div>
+                <p>Processando...</p>
+            </div>
+
+            <div id="tabelaRelatorio">
+                <p style="text-align: center; color: #94a3b8; padding: 20px;">Use os filtros acima e clique em "Buscar" para carregar os dados.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
-
-
-
